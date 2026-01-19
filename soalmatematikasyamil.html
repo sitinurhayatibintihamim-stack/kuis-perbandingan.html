@@ -1,0 +1,107 @@
+<!<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kuis Perbandingan Senilai & Berbalik Nilai</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; padding:20px; }
+    .card { background:white; padding:20px; border-radius:16px; max-width:800px; margin:auto; box-shadow:0 6px 15px rgba(0,0,0,.15); }
+    h1, h2 { text-align:center; }
+    .question { font-size:20px; margin-bottom:15px; }
+    .options button { display:block; width:100%; margin:10px 0; padding:12px; border-radius:10px; border:none; background:#e0e7ff; cursor:pointer; font-size:16px; }
+    .options button:hover { background:#c7d2fe; }
+    .top { display:flex; justify-content:space-between; margin-bottom:15px; }
+    .timer { font-weight:bold; }
+    .hidden { display:none; }
+    input { padding:10px; width:100%; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Kuis Perbandingan</h1>
+  <div id="start">
+    <h2>Masukkan Nama</h2>
+    <input id="name" placeholder="Nama pemain" />
+    <button onclick="startQuiz()">Mulai Kuis</button>
+  </div>  <div id="quiz" class="hidden"></div>
+  <div id="result" class="hidden"></div>
+</div><script>
+const questions = [
+  { q:"Harga 35 buku Rp122.500. Harga 24 buku adalah...", o:["Rp80.000","Rp84.000","Rp86.000","Rp96.000"], a:1 },
+  { q:"Harga 3 lusin pensil Rp45.000. Harga 32 pensil adalah...", o:["Rp32.000","Rp34.000","Rp36.000","Rp40.000"], a:3 },
+  { q:"Harga 5 buku Rp3.500. Uang Rp15.000, sisa kembalian adalah...", o:["Rp200","Rp300","Rp400","Rp500"], a:1 },
+  { q:"9 liter bensin menempuh 72 km. Untuk 108 km perlu...", o:["15 liter","13,5 liter","8 liter","6 liter"], a:1 },
+  { q:"Skala 1:500.000, jarak sebenarnya 85 km. Jarak peta...", o:["0,17 cm","1,7 cm","17 cm","170 cm"], a:2 },
+  { q:"12 orang menyelesaikan pekerjaan 15 hari. Agar 9 hari perlu tambahan...", o:["8 orang","12 orang","20 orang","76 orang"], a:0 },
+  { q:"5 orang menyelesaikan pekerjaan 16 hari. Agar 10 hari perlu tambahan...", o:["2 orang","3 orang","6 orang","8 orang"], a:1 },
+  { q:"Makanan 20 sapi cukup 30 hari. Jika 5 sapi dijual cukup...", o:["25 hari","35 hari","40 hari","50 hari"], a:2 },
+  { q:"490 km ditempuh dengan 35 liter. Dengan 40 liter menempuh...", o:["420 km","450 km","550 km","560 km"], a:3 },
+  { q:"12 kue perlu 600 g gula. 60 kue perlu...", o:["1200 g","1800 g","2400 g","3000 g"], a:3 },
+  { q:"Kecepatan 90 km/jam selama 6 jam. Jika 60 km/jam waktunya...", o:["6 jam","8 jam","9 jam","12 jam"], a:2 }
+];
+
+let index = 0;
+let score = 0;
+let time = 15;
+let timer;
+let player = "";
+
+function startQuiz(){
+  player = document.getElementById('name').value || 'Pemain';
+  document.getElementById('start').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  showQuestion();
+}
+
+function showQuestion(){
+  if(index >= questions.length){
+    showResult(); return;
+  }
+  time = 15;
+  const q = questions[index];
+  document.getElementById('quiz').innerHTML = `
+    <div class='top'>
+      <div>Soal ${index+1}/${questions.length}</div>
+      <div class='timer'>⏱️ ${time}</div>
+    </div>
+    <div class='question'>${q.q}</div>
+    <div class='options'>
+      ${q.o.map((o,i)=>`<button onclick='answer(${i})'>${o}</button>`).join('')}
+    </div>`;
+
+  timer = setInterval(()=>{
+    time--;
+    document.querySelector('.timer').innerText = '⏱️ ' + time;
+    if(time === 0){ clearInterval(timer); index++; showQuestion(); }
+  },1000);
+}
+
+function answer(i){
+  clearInterval(timer);
+  if(i === questions[index].a) score++;
+  index++;
+  showQuestion();
+}
+
+function showResult(){
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').innerHTML = `
+    <h2>Hasil Kuis</h2>
+    <p><b>Nama:</b> ${player}</p>
+    <p><b>Skor:</b> ${score}/${questions.length}</p>
+    <p><b>Nilai:</b> ${Math.round(score/questions.length*100)}</p>`;
+}
+</script></body>
+</html> html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    Hello, World!
+  </h1>
+</body>
+</html>
